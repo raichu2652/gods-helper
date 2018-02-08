@@ -3,7 +3,14 @@ import javafx.scene.Scene;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
+import org.sikuli.basics.Debug;
+import org.sikuli.basics.FileManager;
+import org.sikuli.basics.Settings;
 import org.sikuli.script.*;
+
+import java.io.File;
+import java.net.URL;
+import java.security.CodeSource;
 
 public class Main extends Application {
 
@@ -19,14 +26,37 @@ public class Main extends Application {
         primaryStage.setScene(new Scene(root, 300, 250));
         primaryStage.show();
 
-        Screen screen = new Screen();
+        Screen s = new Screen();
+//        ImagePath.setBundlePath("D:\\IdeaProjects\\godshelper\\target\\classes\\images\\");
+        ImagePath.add("Main/images");
+        ImagePath.addJar("godshelper.jar", "images");
+
+        String[] strings = ImagePath.get();
+        for (String p : strings) {
+            System.out.println(p);
+        }
+        s.highlight(1);
+        Settings.MinSimilarity = 0.5;
+        System.out.println(System.getProperty("java.class.path"));
+        System.out.println(ImagePath.find("back.png"));
         try {
-            screen.wait("img/chrome_back.jpg", 3.0);
-            screen.getLastMatch().highlight(3.0f);
-            screen.getLastMatch().click();
+            s.findAll("back.jpg");
+            s.getLastMatches().hasNext();
+            while (s.getLastMatches().hasNext()) {
+                s.getLastMatches().next().highlight(1);
+                Debug.info("Score: %s", s.getLastMatches().next().getScore());
+                s.getLastMatches().remove();
+            }
+            Match m = s.find("back.jpg");
+            Pattern p = new Pattern("back.jpg");
+            if (m.exists(p.exact()) != null) {
+                Debug.info("Score: %f", s.getLastMatch().getScore());
+                s.getLastMatch().highlight(3.0f);
+            }
+        } catch(FindFailed e) {
+            e.printStackTrace();
         }
-        catch(FindFailed findFailedException) {
-            findFailedException.printStackTrace();
-        }
+
+        primaryStage.close();
     }
 }
