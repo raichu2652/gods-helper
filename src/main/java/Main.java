@@ -2,15 +2,9 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
-
 import org.sikuli.basics.Debug;
-import org.sikuli.basics.FileManager;
 import org.sikuli.basics.Settings;
 import org.sikuli.script.*;
-
-import java.io.File;
-import java.net.URL;
-import java.security.CodeSource;
 
 public class Main extends Application {
 
@@ -27,8 +21,10 @@ public class Main extends Application {
         primaryStage.show();
 
         Screen s = new Screen();
+        // ImagePath.add("className/images") produces "jar:file:file:C:\...",
+        // use ImagePath.addJar() until this is fixed
 //        ImagePath.setBundlePath("D:\\IdeaProjects\\godshelper\\target\\classes\\images\\");
-        ImagePath.add("Main/images");
+//        ImagePath.add("Main/images");
         ImagePath.addJar("godshelper.jar", "images");
 
         String[] strings = ImagePath.get();
