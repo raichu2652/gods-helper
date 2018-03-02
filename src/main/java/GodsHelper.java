@@ -19,8 +19,13 @@ public class GodsHelper implements Runnable {
         service.scheduleWithFixedDelay(new GodsHelper(), 0, 1000, TimeUnit.MILLISECONDS);
     }
 
+    public GodsHelper() {
+        scheduler = new Scheduler();
+    }
+
     public void run() {
         checkStatus();
+        scheduler = new Scheduler();
         Scheduler.schedule();
         // check the current state, includes popup handling
         // menu = MainMenu, AdventureMenu, NOT AVAILABLE? (login on another device, ...), ...
@@ -76,4 +81,5 @@ public class GodsHelper implements Runnable {
     }
 
     private Menu menu;
+    private Scheduler scheduler;
 }
